@@ -4,7 +4,7 @@
 /*
  * _printf - Custom implementation of the printf function
  * @format: Format string containing the characters and format specifiers
- * 
+ *
  * Return: Number of characters printed
  */
 int _printf(const char *format, ...)
@@ -68,5 +68,5 @@ int _printf(const char *format, ...)
 	/* Clean up */
 	va_end(args);
 
-	return count; /* Return the number of characters printed */
+	return (count); /* Return the number of characters printed */
 }
