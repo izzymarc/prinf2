@@ -1,72 +1,66 @@
-
 #include "main.h"
 
-/*
- * _printf - Custom implementation of the printf function
- * @format: Format string containing the characters and format specifiers
- *
- * Return: Number of characters printed
+void print_buffer(char buffer[], int *buff_ind);
+
+/**
+ * _printf - Printf function
+ * @format: format.
+ * Return: Printed chars.
  */
 int _printf(const char *format, ...)
 {
-	/* Counter for the number of characters printed */
-	int count = 0;
-	/* To handle the variable number of arguments */
-	va_list args;
-	/* Loop index for iterating through the format string */
-	int i = 0;
-	/* Temporary character for `%c` */
-	char ch;
-	/* Temporary string for `%s` */
-	char *str;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
 
-	/* Start processing the variable arguments */
-	va_start(args, format);
+	if (format == NULL)
+		return (-1);
 
-	/* Iterate through the format string */
-	while (format && format[i])
+	va_start(list, format);
+
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-		if (format[i] == '%')
+		if (format[i] != '%')
 		{
-			i++; /* Move to the next character for specifier */
-			switch (format[i])
-			{
-				case 'c': /* Character */
-					ch = (char)va_arg(args, int); /* Fetch char argument */
-					putchar(ch); /* Print the character */
-					count++; /* Increment count */
-					break;
-
-				case 's': /* String */
-					str = va_arg(args, char*); /* Fetch string argument */
-					while (*str) /* Print each character of the string */
-					{
-						putchar(*str);
-						str++;
-						count++;
-					}
-					break;
-
-				case '%': /* Percent sign */
-					putchar('%'); /* Print the percent sign */
-					count++; /* Increment count */
-					break;
-
-				default: /* Unsupported specifiers */
-					/* You can handle unsupported specifiers here */
-					break;
-			}
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
 		}
-		else /* Regular character */
+		else
 		{
-			putchar(format[i]); /* Print the regular character */
-			count++; /* Increment count */
+			print_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
 		}
-		i++; /* Move to the next character in the format string */
 	}
 
-	/* Clean up */
-	va_end(args);
+	print_buffer(buffer, &buff_ind);
 
-	return (count); /* Return the number of characters printed */
+	va_end(list);
+
+	return (printed_chars);
+}
+
+/**
+ * print_buffer - Prints the contents of the buffer if it exist
+ * @buffer: Array of chars
+ * @buff_ind: Index at which to add next char, represents the length.
+ */
+void print_buffer(char buffer[], int *buff_ind)
+{
+	if (*buff_ind > 0)
+		write(1, &buffer[0], *buff_ind);
+
+	*buff_ind = 0;
 }
