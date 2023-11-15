@@ -28,16 +28,22 @@ typedef struct fmt {
 
 /* Function prototypes */
 int _printf(const char *format, ...);
-int alphaPrintRoutine(va_list types, char buffer[], int flags, int width, int precision, int size);
+int alphaPrintRoutine(va_list types, char buffer[], 
+    int flags, int width, int precision, int size);
 int breadthAnalyser(const char *format, int *i, va_list list);
 int flagInterpreter(const char *format, int *i);
-int numericDispenseCode(va_list types, char buffer[], int flags, int width, int precision, int size);
-int outputConductor(va_list types, char buffer[], int flags, int width, int precision, int size);
+int numericDispenseCode(va_list types, char buffer[], 
+    int flags, int width, int precision, int size);
+int outputConductor(va_list types, char buffer[], 
+    int flags, int width, int precision, int size);
 int preciseCalcModule(const char *format, int *i, va_list list);
-int printfAuxiliaries(va_list types, char buffer[], int flags, int width, int precision, int size);
-int printOrchestrator(const char *format, int *i, va_list list, char buffer[], int flags, int width, int precision, int size);
+int printfAuxiliaries(va_list types, char buffer[], 
+    int flags, int width, int precision, int size);
+int printOrchestrator(const char *format, int *i, va_list list, char buffer[], 
+    int flags, int width, int precision, int size);
 int sizeDecipherUnit(const char *format, int *i);
-int stringEmitLogic(va_list types, char buffer[], int flags, int width, int precision, int size);
+int stringEmitLogic(va_list types, char buffer[], 
+    int flags, int width, int precision, int size);
 
 /* Utility function prototypes */
 int is_printable(char);
